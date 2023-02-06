@@ -1,14 +1,30 @@
-import { HuddleClientProvider, getHuddleClient } from '@huddle01/huddle01-client';
+import React, { useEffect, useState } from "react";
+import { huddleIframeApp, HuddleIframe } from "@huddle01/huddle01-iframe";
 
-const App = () => {
-  const huddleClient = getHuddleClient('<Your-API-Key>')
+function Register() {
+  let roomId = "harsha-room";
+  const iframeConfig = {
+    roomUrl: `https://iframe.huddle01.com/${roomId}`,
+    height: "100%",
+    width: "100%",
+    noBorder: true
+  };
+
+  useEffect(() => {
+    // huddleIframeApp.methods.connectWallet(walletAddress)
+    huddleIframeApp.on("peer-join", (data) =>
+      console.log({ iframeData: data })
+    );
+    huddleIframeApp.on("peer-left", (data) =>
+      console.log({ iframeData: data })
+    );
+  }, []);
+
   return (
-    <HuddleClientProvider client = {huddleClient} >
-      <YourApp>
-        ...
-      </YourApp>
-    </HuddleClientProvider>
+    <div style={{height:"100vh"}}>
+      <HuddleIframe config={iframeConfig} />
+    </div>
   );
-};
+}
 
-huddleClient.join('roomId');
+export default Register;
